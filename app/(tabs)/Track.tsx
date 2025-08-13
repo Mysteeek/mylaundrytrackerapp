@@ -1,24 +1,18 @@
-import { themeColors } from "@/utils/theme-utils";
+import { useTheme } from "@/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 type TrackingStatus = "Received" | "Process" | "Completed" | null;
 
-const trackingData: Record<string, "Received" | "Process" | "Completed"> = {
+const trackingData: Record<string, TrackingStatus> = {
   "12345678": "Received",
   "87654321": "Process",
   "11223344": "Completed",
 };
 
 export default function Track() {
+  const { colors } = useTheme();
   const [trackingNumber, setTrackingNumber] = useState<string>("");
   const [status, setStatus] = useState<TrackingStatus>(null);
 
@@ -38,29 +32,29 @@ export default function Track() {
     }
   };
 
-  const getButtonColor = (buttonStatus: "Received" | "Process" | "Completed") => {
-    return status === buttonStatus ? "#FFA500" : "#E9E9E9"; // Orange for active, grey for inactive
-  };
+  const getButtonColor = (buttonStatus: TrackingStatus) =>
+    status === buttonStatus ? "#FFA500" : colors.card;
 
-  const getTextStyle = (buttonStatus: "Received" | "Process" | "Completed") => {
-    return status === buttonStatus ? styles.buttonTextLight : styles.buttonTextDark;
-  };
+  const getTextStyle = (buttonStatus: TrackingStatus) =>
+    status === buttonStatus
+      ? styles.buttonTextLight
+      : [styles.buttonTextDark, { color: colors.text }];
 
   return (
-    <View style={[styles.container, { backgroundColor: themeColors.blue }]}>
-      <Text style={styles.pageTitle}>Track</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.pageTitle, { color: colors.text }]}>Track</Text>
 
-      <View style={styles.searchContainer}>
+      <View style={[styles.searchContainer, { backgroundColor: colors.card }]}>
         <Ionicons
           name="search"
           size={20}
-          color="#999"
+          color={colors.secondaryText}
           style={{ marginHorizontal: 8 }}
         />
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, { color: colors.text }]}
           placeholder="Enter 8-digit tracking number"
-          placeholderTextColor="#999"
+          placeholderTextColor={colors.secondaryText}
           value={trackingNumber}
           onChangeText={setTrackingNumber}
           keyboardType="numeric"
@@ -72,28 +66,18 @@ export default function Track() {
       </View>
 
       <View style={styles.row}>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: getButtonColor("Received") }]}
-        >
-          <Text style={getTextStyle("Received")}>Received</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: getButtonColor("Process") }]}
-        >
-          <Text style={getTextStyle("Process")}>Process</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: getButtonColor("Completed") }]}
-        >
-          <Text style={getTextStyle("Completed")}>Completed</Text>
-        </TouchableOpacity>
+        {["Received", "Process", "Completed"].map((item) => (
+          <TouchableOpacity
+            key={item}
+            style={[styles.button, { backgroundColor: getButtonColor(item as TrackingStatus) }]}
+          >
+            <Text style={getTextStyle(item as TrackingStatus)}>{item}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* Status message under buttons */}
       {status && (
-        <Text style={styles.statusMessage}>
+        <Text style={[styles.statusMessage]}>
           Your order status is: {status}
         </Text>
       )}
@@ -102,69 +86,14 @@ export default function Track() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    alignItems: "center",
-  },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: themeColors.Grey,
-    alignSelf: "flex-start",
-    marginBottom: 20,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 8,
-    overflow: "hidden",
-    width: "100%",
-    height: 50,
-    marginBottom: 20,
-  },
-  searchInput: {
-    flex: 1,
-    height: "100%",
-    fontSize: 16,
-    color: "#000",
-  },
-  searchButton: {
-    backgroundColor: "#173B55",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 12,
-  },
-  button: {
-    flex: 1,
-    height: 50,
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 5,
-  },
-  buttonTextLight: {
-    color: "#FFF",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  buttonTextDark: {
-    color: "#000",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  statusMessage: {
-    marginTop: 15,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#FFA500", // Orange text
-  },
+  container: { flex: 1, paddingTop: 50, paddingHorizontal: 20, alignItems: "center" },
+  pageTitle: { fontSize: 24, fontWeight: "bold", alignSelf: "flex-start", marginBottom: 20 },
+  searchContainer: { flexDirection: "row", alignItems: "center", borderRadius: 8, overflow: "hidden", width: "100%", height: 50, marginBottom: 20 },
+  searchInput: { flex: 1, height: "100%", fontSize: 16 },
+  searchButton: { backgroundColor: "#173B55", height: "100%", justifyContent: "center", alignItems: "center", paddingHorizontal: 12 },
+  button: { flex: 1, height: 50, borderRadius: 8, justifyContent: "center", alignItems: "center", marginHorizontal: 5 },
+  buttonTextLight: { color: "#FFF", fontWeight: "bold", fontSize: 16 },
+  buttonTextDark: { fontWeight: "bold", fontSize: 16 },
+  row: { flexDirection: "row", justifyContent: "space-between", width: "100%" },
+  statusMessage: { marginTop: 15, fontSize: 16, fontWeight: "bold", color: "#FFA500" },
 });

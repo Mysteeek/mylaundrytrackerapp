@@ -1,10 +1,9 @@
-import { themeColors } from "@/utils/theme-utils";
+import { useTheme } from "@/utils/theme-context";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-// Define all routes and their params
 type RootStackParamList = {
   Home: undefined;
   DetailsScreen: {
@@ -18,7 +17,6 @@ type RootStackParamList = {
   };
 };
 
-// Create a typed navigation prop for the Home screen
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Home"
@@ -26,6 +24,7 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
 
 export default function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const { colors } = useTheme();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -59,35 +58,38 @@ export default function Home() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: themeColors.blue }]}>
-      <Text style={styles.homeText}>Home</Text>
-      <Text style={styles.title}>Laundry Service</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.homeText, { color: colors.secondaryText }]}>Home</Text>
+      <Text style={[styles.title, { color: colors.text }]}>Laundry Service</Text>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: colors.card, color: colors.text }]}
         placeholder="Customer Name"
-        placeholderTextColor="#999"
+        placeholderTextColor={colors.secondaryText}
         value={name}
         onChangeText={setName}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: colors.card, color: colors.text }]}
         placeholder="Phone Number"
-        placeholderTextColor="#999"
+        placeholderTextColor={colors.secondaryText}
         keyboardType="phone-pad"
         value={phone}
         onChangeText={setPhone}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: colors.card, color: colors.text }]}
         placeholder="Number of Clothes"
-        placeholderTextColor="#999"
+        placeholderTextColor={colors.secondaryText}
         keyboardType="numeric"
         value={clothes}
         onChangeText={setClothes}
       />
 
-      <TouchableOpacity style={styles.addToTrackButton} onPress={handleAddToTrack}>
+      <TouchableOpacity
+        style={[styles.addToTrackButton, { backgroundColor: "#FFA500" }]}
+        onPress={handleAddToTrack}
+      >
         <Text style={styles.addToTrackText}>Add to Track</Text>
       </TouchableOpacity>
     </View>
@@ -96,9 +98,9 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: "center", paddingTop: 50 },
-  homeText: { fontSize: 20, fontWeight: "bold", color: themeColors.Grey, alignSelf: "flex-start", marginLeft: 20 },
-  title: { fontSize: 24, fontWeight: "bold", color: "#FFFFFF", marginVertical: 20 },
-  input: { width: "85%", height: 50, backgroundColor: "#FFFFFF", borderRadius: 8, paddingHorizontal: 15, fontSize: 16, marginVertical: 8 },
-  addToTrackButton: { width: "85%", height: 50, backgroundColor: themeColors.orange, borderRadius: 8, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 20 },
+  homeText: { fontSize: 20, fontWeight: "bold", alignSelf: "flex-start", marginLeft: 20 },
+  title: { fontSize: 24, fontWeight: "bold", marginVertical: 20 },
+  input: { width: "85%", height: 50, borderRadius: 8, paddingHorizontal: 15, fontSize: 16, marginVertical: 8 },
+  addToTrackButton: { width: "85%", height: 50, borderRadius: 8, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 20 },
   addToTrackText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
 });
