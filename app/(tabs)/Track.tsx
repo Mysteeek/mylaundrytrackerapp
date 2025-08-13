@@ -1,36 +1,102 @@
 import { themeColors } from "@/utils/theme-utils";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+type TrackingStatus = "Received" | "Process" | "Completed" | null;
+
+const trackingData: Record<string, "Received" | "Process" | "Completed"> = {
+  "12345678": "Received",
+  "87654321": "Process",
+  "11223344": "Completed",
+};
 
 export default function Track() {
+  const [trackingNumber, setTrackingNumber] = useState<string>("");
+  const [status, setStatus] = useState<TrackingStatus>(null);
+
+  const handleSearch = () => {
+    if (!/^\d{8}$/.test(trackingNumber)) {
+      Alert.alert("Invalid Input", "Tracking number must be exactly 8 digits.");
+      setStatus(null);
+      return;
+    }
+
+    const foundStatus = trackingData[trackingNumber.trim()];
+    if (foundStatus) {
+      setStatus(foundStatus);
+    } else {
+      Alert.alert("Not Found", "Tracking number not found.");
+      setStatus(null);
+    }
+  };
+
+  const getButtonColor = (buttonStatus: "Received" | "Process" | "Completed") => {
+    return status === buttonStatus ? "#FFA500" : "#E9E9E9"; // Orange for active, grey for inactive
+  };
+
+  const getTextStyle = (buttonStatus: "Received" | "Process" | "Completed") => {
+    return status === buttonStatus ? styles.buttonTextLight : styles.buttonTextDark;
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: themeColors.blue }]}>
       <Text style={styles.pageTitle}>Track</Text>
 
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#999" style={{ marginHorizontal: 8 }} />
+        <Ionicons
+          name="search"
+          size={20}
+          color="#999"
+          style={{ marginHorizontal: 8 }}
+        />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search"
+          placeholder="Enter 8-digit tracking number"
           placeholderTextColor="#999"
+          value={trackingNumber}
+          onChangeText={setTrackingNumber}
+          keyboardType="numeric"
+          maxLength={8}
         />
-        <TouchableOpacity style={styles.searchButton}>
+        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <Text style={styles.buttonTextLight}>Track Search</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.row}>
-        <TouchableOpacity style={[styles.button, { backgroundColor: "#173B55" }]}>
-          <Text style={styles.buttonTextLight}>Received</Text>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: getButtonColor("Received") }]}
+        >
+          <Text style={getTextStyle("Received")}>Received</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: "#E9E9E9" }]}>
-          <Text style={styles.buttonTextDark}>Process</Text>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: getButtonColor("Process") }]}
+        >
+          <Text style={getTextStyle("Process")}>Process</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: "#E9E9E9" }]}>
-          <Text style={styles.buttonTextDark}>Completed</Text>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: getButtonColor("Completed") }]}
+        >
+          <Text style={getTextStyle("Completed")}>Completed</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Status message under buttons */}
+      {status && (
+        <Text style={styles.statusMessage}>
+          Your order status is: {status}
+        </Text>
+      )}
     </View>
   );
 }
@@ -94,5 +160,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
+  },
+  statusMessage: {
+    marginTop: 15,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#FFA500", // Orange text
   },
 });

@@ -2,6 +2,7 @@ import { themeColors } from '@/utils/theme-utils';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from "expo-router";
+import "../globals.css";
 
 export default function _Layout () {
     return (
