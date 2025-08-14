@@ -1,31 +1,32 @@
 import { useTheme } from "@/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-type TrackingStatus = "Received" | "Process" | "Completed" | null;
-
-const trackingData: Record<string, TrackingStatus> = {
-  "12345678": "Received",
-  "87654321": "Process",
-  "11223344": "Completed",
-};
+type TrackingStatus = "Received" | "Processing" | "Completed" | null;
 
 export default function Track() {
   const { colors } = useTheme();
   const [trackingNumber, setTrackingNumber] = useState<string>("");
   const [status, setStatus] = useState<TrackingStatus>(null);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!/^\d{8}$/.test(trackingNumber)) {
       Alert.alert("Invalid Input", "Tracking number must be exactly 8 digits.");
       setStatus(null);
       return;
     }
 
-    const foundStatus = trackingData[trackingNumber.trim()];
-    if (foundStatus) {
-      setStatus(foundStatus);
+    const stored = await AsyncStorage.getItem("laundryHistory");
+    const history = stored ? JSON.parse(stored) : [];
+
+    const foundOrder = history.find(
+      (item: any) => item.trackingCode === trackingNumber.trim()
+    );
+
+    if (foundOrder) {
+      setStatus(foundOrder.status);
     } else {
       Alert.alert("Not Found", "Tracking number not found.");
       setStatus(null);
@@ -66,7 +67,7 @@ export default function Track() {
       </View>
 
       <View style={styles.row}>
-        {["Received", "Process", "Completed"].map((item) => (
+        {["Received", "Processing", "Completed"].map((item) => (
           <TouchableOpacity
             key={item}
             style={[styles.button, { backgroundColor: getButtonColor(item as TrackingStatus) }]}

@@ -1,49 +1,62 @@
 import { useTheme } from "@/utils/theme-context";
-import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
+import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function LaundryStatusScreen() {
   const { colors } = useTheme();
-
   const [codeInput, setCodeInput] = useState("");
-  const [history, setHistory] = useState([
-    {
-      name: "John Doe",
-      phone: "08012345678",
-      clothes: "5",
-      code: "12345678",
-      date: "13/08/2025",
-      time: "21:41:14",
-      status: "Received",
-    },
-  ]);
+  const [history, setHistory] = useState<any[]>([]);
 
-  const updateStatus = () => {
-    const updated = history.map((item) =>
-      item.code === codeInput
-        ? {
-            ...item,
-            status:
-              item.status === "Received"
-                ? "Processing"
-                : item.status === "Processing"
-                ? "Completed"
-                : "Completed",
-          }
-        : item
-    );
+  const loadHistory = async () => {
+    const stored = await AsyncStorage.getItem("laundryHistory");
+    if (stored) setHistory(JSON.parse(stored));
+  };
+
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const updateStatus = async () => {
+    if (!codeInput) {
+      Alert.alert("Error", "Please enter the internal code");
+      return;
+    }
+
+    let found = false;
+    const updated = history.map((item) => {
+      if (item.internalCode?.toUpperCase() === codeInput.trim().toUpperCase()) {
+        found = true;
+        let newStatus =
+          item.status === "Received"
+            ? "Processing"
+            : item.status === "Processing"
+            ? "Completed"
+            : "Completed";
+        return { ...item, status: newStatus };
+      }
+      return item;
+    });
+
+    if (!found) {
+      Alert.alert("Not Found", "No matching order for this internal code.");
+      return;
+    }
+
     setHistory(updated);
+    await AsyncStorage.setItem("laundryHistory", JSON.stringify(updated));
     setCodeInput("");
+    Alert.alert("Success", "Order status updated.");
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Received":
-        return "#ff7f11"; // Orange
+        return "#FF8040";
       case "Processing":
-        return "#1e3a8a"; // Dark blue
+        return "#1e3a8a";
       case "Completed":
-        return "#4b5563"; // Gray
+        return "#4b5563";
       default:
         return "#000";
     }
@@ -51,41 +64,47 @@ export default function LaundryStatusScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Page Title */}
       <Text style={[styles.title, { color: colors.text }]}>Laundry Status Manager</Text>
 
-      {/* Code Input */}
       <View style={styles.inputRow}>
         <TextInput
           style={[styles.input, { backgroundColor: colors.card, color: colors.text }]}
-          placeholder="Enter 8-digit code"
+          placeholder="Enter Internal Code Only"
           placeholderTextColor="#9ca3af"
           value={codeInput}
           onChangeText={setCodeInput}
-          keyboardType="numeric"
-          maxLength={8}
+          autoCapitalize="characters"
         />
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: "#ff7f11" }]}
+          style={[styles.button, { backgroundColor: "#FF8040" }]}
           onPress={updateStatus}
         >
           <Text style={[styles.buttonText, { color: "#000" }]}>Update</Text>
         </TouchableOpacity>
       </View>
 
-      {/* History List */}
       <FlatList
         data={history}
-        keyExtractor={(item) => item.code}
+        keyExtractor={(item) => item.trackingCode}
         renderItem={({ item }) => (
           <View style={[styles.historyCard, { backgroundColor: colors.card }]}>
             <View style={styles.row}>
-              <Text style={[styles.historyText, { color: colors.text }]}>Code: {item.code}</Text>
-              <Text style={[styles.status, { color: getStatusColor(item.status) }]}>{item.status}</Text>
+              <Text style={[styles.historyText, { color: colors.text }]}>
+                Internal: {item.internalCode} | Tracking: {item.trackingCode}
+              </Text>
+              <Text style={[styles.status, { color: getStatusColor(item.status) }]}>
+                {item.status}
+              </Text>
             </View>
-            <Text style={[styles.historyText, { color: colors.text }]}>{item.date} {item.time}</Text>
-            <Text style={[styles.historyText, { color: colors.text }]}>{item.name} | {item.phone}</Text>
-            <Text style={[styles.historyText, { color: colors.text }]}>Clothes: {item.clothes}</Text>
+            <Text style={[styles.historyText, { color: colors.text }]}>
+              {item.date} {item.time}
+            </Text>
+            <Text style={[styles.historyText, { color: colors.text }]}>
+              {item.name} | {item.phone}
+            </Text>
+            <Text style={[styles.historyText, { color: colors.text }]}>
+              Clothes: {item.clothes}
+            </Text>
           </View>
         )}
       />
