@@ -16,6 +16,7 @@ function ThemedStack() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="track" options={{ headerShown: false }} />
         <Stack.Screen name="more" options={{ headerShown: false }} />
+        <Stack.Screen name="status" options={{ headerShown: false }} />
       </Stack>
     </View>
   );

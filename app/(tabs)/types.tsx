@@ -1,6 +1,6 @@
 export type RootStackParamList = {
-  Home: undefined;
-  DetailsScreen: {
+    Home: undefined;
+    DetailsScreen: {
     name: string;
     phone: string;
     clothes: string;
@@ -8,5 +8,8 @@ export type RootStackParamList = {
     date: string;
     time: string;
     status: string;
+  };
+  CodeSavedScreen: {
+    code: string;
   };
 };

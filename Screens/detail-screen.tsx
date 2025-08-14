@@ -3,14 +3,9 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../app/(tabs)/types";
 
-type DetailsScreenRouteProp = RouteProp<
-  RootStackParamList,
-  "DetailsScreen"
->;
+type DetailsScreenRouteProp = RouteProp<RootStackParamList, "DetailsScreen">;
 
-type Props = {
-  route: DetailsScreenRouteProp;
-};
+type Props = { route: DetailsScreenRouteProp };
 
 export default function DetailsScreen({ route }: Props) {
   const { name, phone, clothes, code, date, time, status } = route.params;

@@ -3,24 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { RootStackParamList } from "./types";
 
-type RootStackParamList = {
-  Home: undefined;
-  DetailsScreen: {
-    name: string;
-    phone: string;
-    clothes: string;
-    code: string;
-    date: string;
-    time: string;
-    status: string;
-  };
-};
-
-type HomeScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "Home"
->;
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "Home">;
 
 export default function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
@@ -40,18 +25,12 @@ export default function Home() {
       return;
     }
 
-    const record = {
-      name,
-      phone,
-      clothes,
-      code: generateCode(),
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
-      status: "Pending",
-    };
+    const generatedCode = generateCode();
 
-    navigation.navigate("DetailsScreen", record);
+    // Navigate only to CodeSavedScreen with the code
+    navigation.navigate("CodeSavedScreen", { code: generatedCode });
 
+    // Reset input fields
     setName("");
     setPhone("");
     setClothes("");
