@@ -2,7 +2,7 @@ import { useTheme } from "@/utils/theme-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Home() {
   const { colors, isLightMode } = useTheme();
@@ -47,13 +47,11 @@ export default function Home() {
       status: "Received",
     };
 
-    // Save to AsyncStorage
     const stored = await AsyncStorage.getItem("laundryHistory");
     const history = stored ? JSON.parse(stored) : [];
     const updatedHistory = [newOrder, ...history];
     await AsyncStorage.setItem("laundryHistory", JSON.stringify(updatedHistory));
 
-    // Reset form
     setName("");
     setPhone("");
     setClothes("");
@@ -67,9 +65,8 @@ export default function Home() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.homeText, { color: textColor }]}>Home</Text>
-      <Text style={[styles.title, { color: textColor }]}>Laundry Service</Text>
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.headerTitle, { color: "white" }]}>Customer Details</Text>
 
       <TextInput
         style={[styles.input, { backgroundColor: colors.card, color: textColor }]}
@@ -95,7 +92,6 @@ export default function Home() {
         onChangeText={setClothes}
       />
 
-      {/* Amount + Currency Row */}
       <View style={styles.amountRow}>
         <TextInput
           style={[styles.amountInput, { backgroundColor: colors.card, color: textColor }]}
@@ -112,10 +108,10 @@ export default function Home() {
             onValueChange={(value) => setCurrency(value)}
             dropdownIconColor={textColor}
           >
+            <Picker.Item label="NGN" value="NGN" />
             <Picker.Item label="USD" value="USD" />
             <Picker.Item label="EUR" value="EUR" />
             <Picker.Item label="GBP" value="GBP" />
-            <Picker.Item label="NGN" value="NGN" />
             <Picker.Item label="JPY" value="JPY" />
             <Picker.Item label="AUD" value="AUD" />
             <Picker.Item label="CAD" value="CAD" />
@@ -127,23 +123,67 @@ export default function Home() {
       </View>
 
       <TouchableOpacity
-        style={[styles.addToTrackButton, { backgroundColor: "#FFA500" }]}
+        style={[styles.addToTrackButton, { backgroundColor: "#FF8040" }]}
         onPress={handleAddToTrack}
       >
         <Text style={styles.addToTrackText}>Add to Track</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", paddingTop: 50 },
-  homeText: { fontSize: 20, fontWeight: "bold", alignSelf: "flex-start", marginLeft: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginVertical: 20 },
-  input: { width: "85%", height: 50, borderRadius: 8, paddingHorizontal: 15, fontSize: 16, marginVertical: 8 },
-  amountRow: { flexDirection: "row", width: "85%", marginVertical: 8 },
-  amountInput: { flex: 2, height: 50, borderRadius: 8, paddingHorizontal: 15, fontSize: 16 },
-  currencyPicker: { flex: 1, height: 50, borderRadius: 8, marginLeft: 8, justifyContent: "center" },
-  addToTrackButton: { width: "85%", height: 50, borderRadius: 8, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 20 },
-  addToTrackText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
+  container: { 
+    flexGrow: 1, 
+    alignItems: "center", 
+    paddingTop: 40, 
+    paddingBottom: 20,
+    paddingHorizontal: 20 
+  },
+  headerTitle: { 
+    fontSize: 26, 
+    fontWeight: "bold", 
+    marginBottom: 20, 
+    textAlign: "center" 
+  },
+  input: { 
+    width: "100%", 
+    height: 50, 
+    borderRadius: 8, 
+    paddingHorizontal: 15, 
+    fontSize: 16, 
+    marginVertical: 8 
+  },
+  amountRow: { 
+    flexDirection: "row", 
+    width: "100%", 
+    marginVertical: 8 
+  },
+  amountInput: { 
+    flex: 2, 
+    height: 50, 
+    borderRadius: 8, 
+    paddingHorizontal: 15, 
+    fontSize: 16 
+  },
+  currencyPicker: { 
+    flex: 1, 
+    height: 50, 
+    borderRadius: 8, 
+    marginLeft: 8, 
+    justifyContent: "center" 
+  },
+  addToTrackButton: { 
+    width: "100%", 
+    height: 50, 
+    borderRadius: 8, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    marginTop: 15 
+  },
+  addToTrackText: { 
+    color: "#FFF", 
+    fontSize: 16, 
+    fontWeight: "bold" 
+  },
 });

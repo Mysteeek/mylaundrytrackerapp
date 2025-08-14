@@ -1,4 +1,5 @@
 import { useTheme } from "@/utils/theme-context";
+import AntDesign from '@expo/vector-icons/AntDesign';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -84,26 +85,44 @@ export default function LaundryStatusScreen() {
       </View>
 
       <FlatList
+        style={{ width: "100%" }}
+        contentContainerStyle={{ alignItems: "center" }}
         data={history}
         keyExtractor={(item) => item.trackingCode}
         renderItem={({ item }) => (
           <View style={[styles.historyCard, { backgroundColor: colors.card }]}>
-            <View style={styles.row}>
-              <Text style={[styles.historyText, { color: colors.text }]}>
-                Internal: {item.internalCode} | Tracking: {item.trackingCode}
-              </Text>
-              <Text style={[styles.status, { color: getStatusColor(item.status) }]}>
-                {item.status}
-              </Text>
-            </View>
             <Text style={[styles.historyText, { color: colors.text }]}>
-              {item.date} {item.time}
+              <AntDesign name="caretright" size={14} color="white" />
+              Date: {item.date} {item.time}
+              
             </Text>
             <Text style={[styles.historyText, { color: colors.text }]}>
-              {item.name} | {item.phone}
+              <AntDesign name="caretright" size={14} color="white" />
+              Name: {item.name}
             </Text>
             <Text style={[styles.historyText, { color: colors.text }]}>
+              <AntDesign name="caretright" size={14} color="white" />
+              Number: {item.phone}
+            </Text>
+            <Text style={[styles.historyText, { color: colors.text }]}>
+              <AntDesign name="caretright" size={14} color="white" />
               Clothes: {item.clothes}
+            </Text>
+            <Text style={[styles.historyText, { color: colors.text }]}>
+              <AntDesign name="caretright" size={14} color="white" />
+              Amount: {item.amount}
+            </Text>
+            <Text style={[styles.historyText, { color: colors.text }]}>
+              <AntDesign name="caretright" size={14} color="white" />
+              Internal: {item.internalCode}
+            </Text>
+            <Text style={[styles.historyText, { color: colors.text }]}>
+              <AntDesign name="caretright" size={14} color="white" />
+              Tracking: {item.trackingCode}
+            </Text>
+            <Text style={[styles.status, { color: getStatusColor(item.status) }]}>
+              <AntDesign name="caretright" size={14} color="white" />
+              Status: {item.status}
             </Text>
           </View>
         )}
@@ -113,14 +132,50 @@ export default function LaundryStatusScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 50, paddingHorizontal: 20, alignItems: "center" },
-  title: { fontSize: 20, fontWeight: "bold", marginBottom: 12 },
-  inputRow: { flexDirection: "row", marginBottom: 16, width: "100%" },
-  input: { flex: 1, padding: 10, borderRadius: 8, marginRight: 8 },
-  button: { paddingHorizontal: 16, justifyContent: "center", borderRadius: 8 },
-  buttonText: { fontWeight: "bold" },
-  historyCard: { padding: 12, borderRadius: 8, marginBottom: 10, width: "100%" },
-  row: { flexDirection: "row", justifyContent: "space-between" },
-  historyText: { fontSize: 14 },
-  status: { fontWeight: "bold" },
+  container: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  inputRow: {
+    flexDirection: "row",
+    marginBottom: 16,
+    width: "100%",
+    justifyContent: "center",
+  },
+  input: {
+    flex: 1,
+    padding: 10,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  button: {
+    paddingHorizontal: 16,
+    justifyContent: "center",
+    borderRadius: 8,
+  },
+  buttonText: {
+    fontWeight: "bold",
+  },
+  historyCard: {
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+    width: "95%",
+  },
+  historyText: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  status: {
+    fontWeight: "bold",
+    marginTop: 4,
+  },
 });

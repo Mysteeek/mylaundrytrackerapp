@@ -6,17 +6,16 @@ function ThemedStack() {
   const { colors } = useTheme();
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <View style={{ flex: 2, backgroundColor: colors.background }}>
       <Stack
         screenOptions={{
           contentStyle: { backgroundColor: colors.background },
         }}
       >
-        <Stack.Screen name="home" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="track" options={{ headerShown: false }} />
-        <Stack.Screen name="more" options={{ headerShown: false }} />
-        <Stack.Screen name="status" options={{ headerShown: false }} />
+        <Stack.Screen name="Home" options={{ headerShown: true }} />
+        <Stack.Screen name="Status" options={{ headerShown: false }} />
+        <Stack.Screen name="Track" options={{ headerShown: false }} />
+        <Stack.Screen name="More" options={{ headerShown: false }} />
       </Stack>
     </View>
   );

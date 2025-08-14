@@ -34,7 +34,7 @@ export default function Track() {
   };
 
   const getButtonColor = (buttonStatus: TrackingStatus) =>
-    status === buttonStatus ? "#FFA500" : colors.card;
+    status === buttonStatus ? "#FF8040" : colors.card;
 
   const getTextStyle = (buttonStatus: TrackingStatus) =>
     status === buttonStatus
@@ -43,7 +43,7 @@ export default function Track() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.pageTitle, { color: colors.text }]}>Track</Text>
+      <Text style={[styles.pageTitle, { color: colors.text }]}>Track Your Order</Text>
 
       <View style={[styles.searchContainer, { backgroundColor: colors.card }]}>
         <Ionicons
@@ -62,7 +62,7 @@ export default function Track() {
           maxLength={8}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <Text style={styles.buttonTextLight}>Track Search</Text>
+          <Text style={styles.buttonTextLight}>Track</Text>
         </TouchableOpacity>
       </View>
 
@@ -87,14 +87,66 @@ export default function Track() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 50, paddingHorizontal: 20, alignItems: "center" },
-  pageTitle: { fontSize: 24, fontWeight: "bold", alignSelf: "flex-start", marginBottom: 20 },
-  searchContainer: { flexDirection: "row", alignItems: "center", borderRadius: 8, overflow: "hidden", width: "100%", height: 50, marginBottom: 20 },
-  searchInput: { flex: 1, height: "100%", fontSize: 16 },
-  searchButton: { backgroundColor: "#173B55", height: "100%", justifyContent: "center", alignItems: "center", paddingHorizontal: 12 },
-  button: { flex: 1, height: 50, borderRadius: 8, justifyContent: "center", alignItems: "center", marginHorizontal: 5 },
-  buttonTextLight: { color: "#FFF", fontWeight: "bold", fontSize: 16 },
-  buttonTextDark: { fontWeight: "bold", fontSize: 16 },
-  row: { flexDirection: "row", justifyContent: "space-between", width: "100%" },
-  statusMessage: { marginTop: 15, fontSize: 16, fontWeight: "bold", color: "#FFA500" },
+  container: { 
+    flex: 1, 
+    paddingTop: 60, 
+    paddingHorizontal: 20, 
+    alignItems: "center" 
+  },
+  pageTitle: { 
+    fontSize: 26, 
+    fontWeight: "bold", 
+    textAlign: "center", 
+    marginBottom: 25 
+  },
+  searchContainer: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    borderRadius: 8, 
+    overflow: "hidden", 
+    width: "100%", 
+    height: 50, 
+    marginBottom: 25 
+  },
+  searchInput: { 
+    flex: 1, 
+    height: "100%", 
+    fontSize: 16 
+  },
+  searchButton: { 
+    backgroundColor: "#173B55", 
+    height: "100%", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    paddingHorizontal: 15 
+  },
+  button: { 
+    flex: 1, 
+    height: 50, 
+    borderRadius: 8, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    marginHorizontal: 5 
+  },
+  buttonTextLight: { 
+    color: "#FFF", 
+    fontWeight: "bold", 
+    fontSize: 16 
+  },
+  buttonTextDark: { 
+    fontWeight: "bold", 
+    fontSize: 16 
+  },
+  row: { 
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    width: "100%" 
+  },
+  statusMessage: { 
+    marginTop: 20, 
+    fontSize: 16, 
+    fontWeight: "bold", 
+    color: "#FF8040", 
+    textAlign: "center" 
+  },
 });

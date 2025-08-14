@@ -7,17 +7,25 @@ import "../globals.css";
 
 export default function _Layout () {
     return (
-        <Tabs screenOptions={{
-                tabBarActiveTintColor: themeColors.orange
-                }}
-
-                >
-            <Tabs.Screen
+        <Tabs 
+            screenOptions={{
+            tabBarActiveTintColor: themeColors.orange
+            }}
+        >
+            <Tabs.Screen            
             name="Home"
             options={{
                 title: "Home",
                 headerShown: false,
-                tabBarIcon: ({ color}) => <Fontisto name="home" size={34} color="black" />
+                tabBarIcon: ({ color}) => <Fontisto name="home" size={25} color="#ff8040" />
+            }}/>
+
+            <Tabs.Screen
+            name="Status"
+            options={{
+                title: "Status",
+                headerShown: false,
+                tabBarIcon: ({ color}) => <Entypo name="lifebuoy" size={25} color="#ff8040" />
             }}/>
 
             <Tabs.Screen
@@ -25,7 +33,7 @@ export default function _Layout () {
             options={{
                 title: "Track",
                 headerShown: false,
-                tabBarIcon: ({ color}) => <MaterialIcons name="track-changes" size={34} color="black" />
+                tabBarIcon: ({ color}) => <MaterialIcons name="track-changes" size={25} color="#ff8040" />
             }}/>
 
           <Tabs.Screen
@@ -33,15 +41,7 @@ export default function _Layout () {
             options={{
                 title: "More",
                 headerShown: false,
-                tabBarIcon: ({ color}) => <Fontisto name="more-v" size={34} color="black" />
-            }}/>
-
-            <Tabs.Screen
-            name="status"
-            options={{
-                title: "Status",
-                headerShown: false,
-                tabBarIcon: ({ color}) => <Entypo name="lifebuoy" size={24} color="black" />
+                tabBarIcon: ({ color}) => <Fontisto name="more-v" size={25} color="#ff8040" />
             }}/>
         </Tabs>
     );
