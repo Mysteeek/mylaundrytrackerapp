@@ -12,10 +12,13 @@ function ThemedStack() {
           contentStyle: { backgroundColor: colors.background },
         }}
       >
-        <Stack.Screen name="Home" options={{ headerShown: true }} />
-        <Stack.Screen name="Status" options={{ headerShown: false }} />
-        <Stack.Screen name="Track" options={{ headerShown: false }} />
-        <Stack.Screen name="More" options={{ headerShown: false }} />
+        {/* Main Tabs entry */}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+        {/* Any extra screens OUTSIDE tabs go here */}
+        {/* Example:
+        <Stack.Screen name="details" options={{ headerShown: false }} />
+        */}
       </Stack>
     </View>
   );

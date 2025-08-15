@@ -2,25 +2,29 @@ import { useTheme } from "@/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 export default function More() {
   const { isLightMode, toggleTheme, colors } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <ScrollView 
+      contentContainerStyle={[styles.container, { backgroundColor: colors.background }]}
+    >
       {/* Title */}
       <Text style={[styles.pageTitle, { color: colors.text }]}>More Options</Text>
 
       {/* Review Section */}
       <TouchableOpacity style={[styles.reviewButton, { backgroundColor: colors.card }]}>
         <Text style={[styles.reviewText, { color: colors.text }]}>Review</Text>
-        <Ionicons name="chevron-down" size={20} color={colors.icon} />
+        <Ionicons name="chevron-down" size={width * 0.05} color={colors.icon} />
       </TouchableOpacity>
 
       {/* Share App */}
       <TouchableOpacity style={styles.shareRow}>
-        <SimpleLineIcons name="share" size={24} color={colors.icon} />
+        <SimpleLineIcons name="share" size={width * 0.055} color={colors.icon} />
         <Text style={[styles.shareText, { color: colors.text }]}>Share the app</Text>
       </TouchableOpacity>
 
@@ -35,20 +39,20 @@ export default function More() {
         />
         <Text style={[styles.toggleLabel, { color: colors.text }]}>Light mode</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     paddingTop: 50,
-    paddingHorizontal: 20,
+    paddingHorizontal: width * 0.05,
   },
   pageTitle: {
-    fontSize: 24,
+    fontSize: width * 0.06,
     fontWeight: "bold",
-    textAlign: "center", // Center the title
+    textAlign: "center",
     marginBottom: 30,
   },
   reviewButton: {
@@ -56,13 +60,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    height: 50,
+    minHeight: 50,
     borderRadius: 8,
     paddingHorizontal: 20,
     marginBottom: 15,
   },
   reviewText: {
-    fontSize: 16,
+    fontSize: width * 0.045,
     fontWeight: "bold",
   },
   shareRow: {
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   shareText: {
-    fontSize: 16,
+    fontSize: width * 0.045,
     marginLeft: 6,
   },
   toggleRow: {
@@ -83,6 +87,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   toggleLabel: {
-    fontSize: 14,
+    fontSize: width * 0.04,
   },
 });

@@ -2,9 +2,11 @@ import { useTheme } from "@/utils/theme-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function Home() {
+const { width } = Dimensions.get("window");
+
+export default function home() {
   const { colors, isLightMode } = useTheme();
   const textColor = isLightMode ? "#000000" : "#808080";
 
@@ -14,13 +16,11 @@ export default function Home() {
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState("USD");
 
-  // Generate 3-digit alphanumeric for internal updates
   const generateInternalCode = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     return Array.from({ length: 3 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
   };
 
-  // Generate 8-digit numeric tracking code for customer
   const generateTrackingCode = () =>
     Math.floor(10000000 + Math.random() * 90000000).toString();
 
@@ -65,7 +65,10 @@ export default function Home() {
   };
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: colors.background }]}>
+    <ScrollView
+      contentContainerStyle={[styles.container, { backgroundColor: colors.background }]}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={[styles.headerTitle, { color: "white" }]}>Customer Details</Text>
 
       <TextInput
@@ -108,16 +111,9 @@ export default function Home() {
             onValueChange={(value) => setCurrency(value)}
             dropdownIconColor={textColor}
           >
-            <Picker.Item label="NGN" value="NGN" />
-            <Picker.Item label="USD" value="USD" />
-            <Picker.Item label="EUR" value="EUR" />
-            <Picker.Item label="GBP" value="GBP" />
-            <Picker.Item label="JPY" value="JPY" />
-            <Picker.Item label="AUD" value="AUD" />
-            <Picker.Item label="CAD" value="CAD" />
-            <Picker.Item label="CNY" value="CNY" />
-            <Picker.Item label="HKD" value="HKD" />
-            <Picker.Item label="NZD" value="NZD" />
+            {["NGN", "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CNY", "HKD", "NZD"].map((cur) => (
+              <Picker.Item key={cur} label={cur} value={cur} />
+            ))}
           </Picker>
         </View>
       </View>
@@ -138,20 +134,20 @@ const styles = StyleSheet.create({
     alignItems: "center", 
     paddingTop: 40, 
     paddingBottom: 20,
-    paddingHorizontal: 20 
+    paddingHorizontal: width * 0.05
   },
   headerTitle: { 
-    fontSize: 26, 
+    fontSize: width * 0.065, 
     fontWeight: "bold", 
     marginBottom: 20, 
     textAlign: "center" 
   },
   input: { 
     width: "100%", 
-    height: 50, 
+    minHeight: 50, 
     borderRadius: 8, 
     paddingHorizontal: 15, 
-    fontSize: 16, 
+    fontSize: width * 0.04, 
     marginVertical: 8 
   },
   amountRow: { 
@@ -161,21 +157,21 @@ const styles = StyleSheet.create({
   },
   amountInput: { 
     flex: 2, 
-    height: 50, 
+    minHeight: 50, 
     borderRadius: 8, 
     paddingHorizontal: 15, 
-    fontSize: 16 
+    fontSize: width * 0.04 
   },
   currencyPicker: { 
     flex: 1, 
-    height: 50, 
+    minHeight: 50, 
     borderRadius: 8, 
     marginLeft: 8, 
     justifyContent: "center" 
   },
   addToTrackButton: { 
     width: "100%", 
-    height: 50, 
+    minHeight: 50, 
     borderRadius: 8, 
     justifyContent: "center", 
     alignItems: "center", 
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
   },
   addToTrackText: { 
     color: "#FFF", 
-    fontSize: 16, 
+    fontSize: width * 0.04, 
     fontWeight: "bold" 
   },
 });

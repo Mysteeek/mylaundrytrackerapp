@@ -3,13 +3,13 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from "expo-router";
-import "../globals.css";
 
 export default function _Layout () {
     return (
         <Tabs 
             screenOptions={{
-            tabBarActiveTintColor: themeColors.orange
+            tabBarActiveTintColor: themeColors.orange,
+            headerShown: false
             }}
         >
             <Tabs.Screen            
