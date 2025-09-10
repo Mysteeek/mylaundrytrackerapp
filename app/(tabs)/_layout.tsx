@@ -1,8 +1,8 @@
-import { themeColors } from '@/utils/theme-utils';
 import Entypo from '@expo/vector-icons/Entypo';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from "expo-router";
+import { themeColors } from '../../utils/theme-utils';
 
 export default function _Layout () {
     return (

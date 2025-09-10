@@ -1,8 +1,8 @@
-import { useTheme } from "@/utils/theme-context";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../utils/theme-context";
 
 export default function LaundryStatusScreen() {
   const { colors } = useTheme();

@@ -1,8 +1,8 @@
-import { useTheme } from "@/utils/theme-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../utils/theme-context";
 
 const { width } = Dimensions.get("window");
 

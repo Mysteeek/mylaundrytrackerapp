@@ -1,8 +1,7 @@
-import { useTheme } from "@/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import React from "react";
 import { Dimensions, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../utils/theme-context";
 
 const { width } = Dimensions.get("window");
 

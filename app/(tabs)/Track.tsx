@@ -1,8 +1,8 @@
-import { useTheme } from "@/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../utils/theme-context";
 
 type TrackingStatus = "Received" | "Processing" | "Completed" | null;
 
